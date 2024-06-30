@@ -2,6 +2,9 @@ from src.domain.audit.audit_model import AuditFields
 
 
 class User(AuditFields):
-    userId: int
-    personId: str
-    userName: str
+    user_id: int
+    person_id: int
+    username: str
+
+    class Config:
+        from_attributes = True

@@ -10,4 +10,4 @@ class UserRepository(ABC):
 
     @staticmethod
     def find_by_id(user_id: int) -> User | None:
-        return UserEntity.query.filter_by(user_id=user_id).one_or_none()
+        return UserEntity.query.filter_by(user_id=user_id).first()
