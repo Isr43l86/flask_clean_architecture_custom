@@ -5,7 +5,7 @@ from flask import Flask
 
 from .database import db
 from .error_handler import setup_error_handler
-from .infrastructure import UsersController
+from .infrastructure import UsersController, PptGeneratorController
 from .logging import setup_logging
 
 load_dotenv()
@@ -24,5 +24,6 @@ def create_app():
 
     # Register controllers
     app.register_blueprint(UsersController)
+    app.register_blueprint(PptGeneratorController)
 
     return app

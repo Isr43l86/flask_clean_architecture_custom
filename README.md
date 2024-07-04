@@ -6,10 +6,17 @@ This is a reusable Python Flask template. The project is based on Flask in combi
 
 ### Requirements
 
+#### Instalar de manera global en su equipo
+
+```shell
+pip install virtualenv
+```
+
 Create a new virtual environment and activate it
 
 ```shell
 virtualenv -p python venv
+
 .\venv\Scripts\activate
 ```
 
@@ -32,7 +39,7 @@ Activate
 You can then run the application with flask:
 
 ```bash
-flask --app src/app run 
+flask --app src/app run
 ```
 
 or with gunicorn:
