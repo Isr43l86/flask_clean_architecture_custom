@@ -1,114 +1,105 @@
 from pptx import Presentation
-from pptx.util import Inches, Pt
-from pptx.enum.text import PP_ALIGN
-from pptx.dml.color import RGBColor
-from bs4 import BeautifulSoup
+from pptx.util import Inches
+import os
 
 
-texto_markdown = """
-6. **Timeline:**
-   - **Project Phases:**
-     - Planning: 10 days
-     - Requirements Analysis: 15 days
-     - System Design: 20 days
-     - Development: 40 days
-     - Testing: 20 days
-     - Implementation: 10 days
-     - Maintenance: Ongoing
-   - **Total Duration:** 115 working days
-
-   - **Project Team:**
-     - 1 Project Manager: 960 hours
-     - 1 Business Analyst: 160 hours
-     - 1 Software Architect: 160 hours
-     - 2 Backend Developers: 640 hours (320 hours each)
-     - 2 Frontend Developers: 640 hours (320 hours each)
-     - 2 Testers: 480 hours (240 hours each)
-     - Contingency roles: Technical Support as needed
-"""
+def load_presentation(template_path):
+    return Presentation(template_path)
 
 
-def markdownToPPTX(markdown_text, text_frame):
-    mardownLines = markdown_text.split("\n")
-
-    for line in mardownLines:
-        if '**' in line and '-' not in line:
-            run = text_frame.add_paragraph().add_run()
-            run.text = line.replace('**', '')
-            run.font.bold = True
-        elif '-' in line and '**' not in line:
-            run = text_frame.add_paragraph().add_run()
-            run.text = '• ' + line.replace('-', '')
-            run.font.bold = False
-        elif '**' in line and '*' in line:
-            run = text_frame.add_paragraph().add_run()
-            run.text = '-' + line.replace('**', '').replace('-', '')
-            run.font.bold = True
+def save_presentation(prs, save_path):
+    prs.save(save_path)
 
 
-def update_ppt_service():
-    root_path = 'D:/kruger/krugerAI/'
-    template_path = root_path + 'nueva_plantilla.pptx'
-    save_path = root_path + 'pruebas/new_ppt04.pptx'
-    prs = Presentation(template_path)
-
-    # html_text = markdown.markdown(texto_markdown)
-
-    # Valores por defecto
-    slide_theme = 0
-    slide_title = "nueva slide desde python"
-    slide_company_name = "kruger desde python"
-
-    # Insertar título de la presentación en la primera diapositiva
+def set_first_slide_title(prs, title):
     first_slide = prs.slides[0]
-
-    # Buscar un cuadro de texto específico (basado en tu diseño)
     for shape in first_slide.shapes:
         if not shape.has_text_frame:
             continue
         if "initial_slide_title" in shape.text:
-            shape.text = slide_company_name
-            break
-    else:
-        raise AttributeError(
-            "No se encontró el cuadro de texto para el título en la primera diapositiva.")
+            shape.text = title
+            return
+    raise AttributeError(
+        "No se encontró el cuadro de texto para el título en la primera diapositiva."
+    )
 
-    # Insertar una nueva diapositiva con el layout especificado en slide_theme
+
+def add_slide(prs, slide_theme, slide_title, slide_content, position):
     slide_layout = prs.slide_layouts[slide_theme]
     new_slide = prs.slides.add_slide(slide_layout)
 
-    # Mover la nueva diapositiva a la posición 5 (índice 4)
-    new_slide_position = 4
+    # Mover la nueva diapositiva a la posición especificada
     xml_slides = prs.slides._sldIdLst
     slides = list(xml_slides)
-    new_slide_element = slides[-1]  # La nueva diapositiva se agrega al final
+    new_slide_element = slides[-1]
     xml_slides.remove(new_slide_element)
-    xml_slides.insert(new_slide_position, new_slide_element)
+    xml_slides.insert(position, new_slide_element)
 
-    # Agregar título a la nueva diapositiva
-    if new_slide.shapes.title:
-        new_slide.shapes.title.text = slide_title
+    set_slide_title(new_slide, slide_theme, slide_title)
+    if slide_content:
+        set_slide_content(new_slide, slide_content)
+
+
+def set_slide_title(slide, slide_theme, slide_title):
+    if slide_theme == 8:
+        if slide.shapes.title:
+            slide.shapes.title.text = slide_title
+        else:
+            add_textbox(slide, Inches(0.5), Inches(
+                1), Inches(8.5), Inches(1), slide_title)
     else:
-        left = Inches(0.5)
-        top = Inches(1)
-        width = Inches(8.5)
-        height = Inches(1)
-        textbox = new_slide.shapes.add_textbox(left, top, width, height)
-        text_frame = textbox.text_frame
-        text_frame.text = slide_title
+        if len(slide.placeholders) > 1:
+            subtitle_placeholder = slide.placeholders[1]
+            subtitle_placeholder.text = slide_title
+        else:
+            add_textbox(slide, Inches(1), Inches(1.5),
+                        Inches(8.5), Inches(1), slide_title)
 
-    # Agregar contenido de slide_content a la nueva diapositiva
+
+def set_slide_content(slide, slide_content):
     left = Inches(0.5)
     top = Inches(1.5)
-    width = Inches(8.5)
+    width = Inches(6)
     height = Inches(4)
-    textbox = new_slide.shapes.add_textbox(left, top, width, height)
+    textbox = slide.shapes.add_textbox(left, top, width, height)
     text_frame = textbox.text_frame
 
-    markdownToPPTX(texto_markdown, text_frame)
+    for content in slide_content:
+        label = content.get('label', '')
+        tech_list = content.get(list(content.keys())[1], [])
 
-    # parse_html_to_pptx(text_frame, html_text)
+        p = text_frame.add_paragraph()
+        p.text = label
+        p.bold = True
 
-    prs.save(save_path)
+        for tech in tech_list:
+            p = text_frame.add_paragraph()
+            p.text = f"- {tech}"
 
+
+def add_textbox(slide, left, top, width, height, text):
+    textbox = slide.shapes.add_textbox(left, top, width, height)
+    text_frame = textbox.text_frame
+    text_frame.text = text
+
+
+def update_ppt_service(SLIDE_DATA):
+    slide_company_name = SLIDE_DATA["slide_company_name"]
+    array_slides = SLIDE_DATA["array_slides"]
+
+    root_path = 'D:/kruger/krugerAI/'
+    template_path = os.path.join(root_path, 'nueva_plantilla.pptx')
+    save_path = os.path.join(root_path, 'pruebas',
+                             f'propuesta_{slide_company_name}.pptx')
+
+    prs = load_presentation(template_path)
+    set_first_slide_title(prs, slide_company_name)
+
+    for i, slide_data in enumerate(array_slides):
+        slide_theme = slide_data["slide_theme"]
+        slide_title = slide_data.get("slide_title", "")
+        slide_content = slide_data.get("slide_content", [])
+        add_slide(prs, slide_theme, slide_title, slide_content, 1 + i)
+
+    save_presentation(prs, save_path)
     return save_path

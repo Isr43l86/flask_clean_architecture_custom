@@ -1,0 +1,48 @@
+[
+  {
+    "slide_theme": 0,
+    "slide_title": "Requerimientos técnicos",
+    "slide_content": [
+      {
+        "label": "Frontend",
+        "front_tech": [
+          "flutter",
+          "Firebase paramanejo de notifcaciones",
+          "Consumo servicios",
+          "Desarrollosparticulares"
+        ]
+      },
+      {
+        "label": "Backend",
+        "backend_tech": ["NodeJS", "Servicios .NET", "SQL"]
+      },
+      {
+        "label": "Servers",
+        "servers_tech": ["sql", "aplicaciones", "cloud"]
+      }
+    ]
+  },
+  {
+    "slide_theme": 21,
+    "slide_title": "Requerimientos técnicos",
+    "slide_content": [
+      {
+        "label": "Frontend",
+        "front_tech": [
+          "flutter",
+          "Firebase paramanejo de notifcaciones",
+          "Consumo servicios",
+          "Desarrollosparticulares"
+        ]
+      },
+      {
+        "label": "Backend",
+        "backend_tech": ["NodeJS", "Servicios .NET", "SQL"]
+      },
+      {
+        "label": "Servers",
+        "servers_tech": ["sql", "aplicaciones", "cloud"]
+      }
+    ]
+  }
+]
