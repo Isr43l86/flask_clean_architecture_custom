@@ -1,9 +1,9 @@
 from .entities import UserEntity
-from .repositories import UserRepository
-from .services import UserService
+from .repositories import UserRepositoryImpl
+from .services import UserServiceImpl
 
 __all__ = [
     'UserEntity',
-    'UserRepository',
-    'UserService'
+    'UserRepositoryImpl',
+    'UserServiceImpl'
 ]

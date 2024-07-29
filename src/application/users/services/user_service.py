@@ -1,13 +1,9 @@
-from abc import ABC
-from typing import Callable
-
-from src.domain import User
-from ..repositories import UserRepository
+from src.domain import User, UserService
+from ..repositories import UserRepositoryImpl
 
 
-class UserService(ABC):
-    base_class: Callable
+class UserServiceImpl(UserService):
 
     @staticmethod
     def find_by_id(user_id: int) -> User | None:
-        return UserRepository.find_by_id(user_id)
+        return UserRepositoryImpl.find_by_id(user_id)

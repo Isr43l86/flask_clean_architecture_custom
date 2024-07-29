@@ -1,6 +1,6 @@
 from flask import Blueprint
 
-from src.application import app_constants, UserService
+from src.application import app_constants, UserServiceImpl
 from ..responses import create_response
 
 UsersController = Blueprint(
@@ -17,5 +17,5 @@ def index():
 
 @UsersController.route('/<user_id>', methods=['GET'])
 def find_user_by_id(user_id):
-    user_found = UserService.find_by_id(user_id)
+    user_found = UserServiceImpl.find_by_id(user_id)
     return create_response(user_found, 201)

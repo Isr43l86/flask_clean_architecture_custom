@@ -1,4 +1,4 @@
-from src.domain.audit.audit_model import AuditFields
+from ...audit import AuditFields
 
 
 class User(AuditFields):
