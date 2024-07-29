@@ -6,7 +6,15 @@ This is a reusable Python Flask template. The project is based on Flask in combi
 
 ### Requirements
 
-Create a new virtual environment and activate it
+#### ¡IMPORTANT! Get python installed > 3.0
+
+Install virtual environment in python system
+
+```shell
+pip install virtualenv
+```
+
+Create a new virtual environment in the project root folder and activate it
 
 ```shell
 virtualenv -p python venv
@@ -25,7 +33,9 @@ Install requirements.txt
 pip install -r requirements.txt
 ```
 
-Activate
+### Considerations
+
+Configure the development IDE to recognize the newly created virtual environment.
 
 ### Running the application locally
 
