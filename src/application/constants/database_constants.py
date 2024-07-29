@@ -1,0 +1,2 @@
+KSECURITY_SCHEMA = 'ksecurity'
+KSECURITY_PREFIX = 'kserpt'
