@@ -11,3 +11,4 @@ DEFAULT_LOG_LEVEL = 'LOG_LEVEL'
 
 # MIME_TYPES
 MIME_TYPE_WORD = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+MIME_TYPE_PPT = 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
