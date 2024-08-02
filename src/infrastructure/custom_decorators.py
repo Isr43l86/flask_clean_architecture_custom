@@ -1,7 +1,9 @@
 from functools import wraps
 
-from flask import request, abort
+from flask import request
 from pydantic import ValidationError
+
+from src.exceptions import PydanticValidationException
 
 
 def body(dto_class):
@@ -13,7 +15,16 @@ def body(dto_class):
                 dto = dto_class(**data)
                 return func(dto=dto, *args, **kwargs)
             except ValidationError as e:
-                abort(400, {'message': 'custom error message to appear in body'})
+                errors_list = []
+                for error in e.errors():
+                    new_error = {
+                        'type': error['type'],
+                        'message': error['msg'],
+                        'missing': error['loc'],
+                        'url': error['url']
+                    }
+                    errors_list.append(new_error)
+                raise PydanticValidationException(str(errors_list), 400)
 
         return wrapper
 
