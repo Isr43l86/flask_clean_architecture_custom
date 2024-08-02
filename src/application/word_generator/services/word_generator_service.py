@@ -10,6 +10,7 @@ from docx import Document
 
 from ...constants import app_constants
 
+MAIN_SECTION_WITH_TABLE = 'PROPUESTA TÉCNICA'
 SECTIONS_WITH_TABLES = {
     'Criticidad': 'GARANTÍA TÉCNICA',
     'TIEMPO DEL PROYECTO': 'TIEMPO DE EJECUCIÓN DEL PROYECTO'
@@ -31,8 +32,14 @@ def delete_sections(paragraphs, flag_style: str, sections_to_delete: List[str]):
         if paragraph.style.name.startswith(flag_style) and str(remove_numbers(paragraph.text)) in sections_to_delete:
             paragraph.clear()
             delete_items = True
-        elif paragraph.style.name.startswith(flag_style):
-            delete_items = False
+        else:
+            if flag_style == app_constants.HEADING_1:
+                if paragraph.style.name.startswith(flag_style):
+                    delete_items = False
+            elif flag_style == app_constants.HEADING_2:
+                if paragraph.style.name.startswith(app_constants.HEADING_1) or paragraph.style.name.startswith(
+                        app_constants.HEADING_2):
+                    delete_items = False
 
         if delete_items:
             p = paragraph._element
@@ -70,11 +77,14 @@ class WordGeneratorServiceImpl(ABC):
                 first_row_column_text] in secondary_sections_to_delete:
                 activeTable._element.getparent().remove(activeTable._element)
 
+            if MAIN_SECTION_WITH_TABLE in primary_sections_to_delete and first_row_column_text in SECTIONS_WITH_TABLES.keys():
+                activeTable._element.getparent().remove(activeTable._element)
+
         if len(primary_sections_to_delete) > 0:
-            delete_sections(doc.paragraphs, 'Heading 1', primary_sections_to_delete)
+            delete_sections(doc.paragraphs, app_constants.HEADING_1, primary_sections_to_delete)
 
         if len(secondary_sections_to_delete) > 0:
-            delete_sections(doc.paragraphs, 'Heading 2', secondary_sections_to_delete)
+            delete_sections(doc.paragraphs, app_constants.HEADING_2, secondary_sections_to_delete)
 
         for paragraph in doc.paragraphs:
             for key, value in new_dict.items():
