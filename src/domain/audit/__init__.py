@@ -1,3 +1,3 @@
-from .audit_model import AuditFields
+from .audit_model import AuditFields, Status
 
-__all__ = ['AuditFields']
+__all__ = ['AuditFields', 'Status']

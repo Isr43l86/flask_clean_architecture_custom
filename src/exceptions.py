@@ -45,3 +45,8 @@ class ClientException(Exception):
 class PydanticValidationException(ApiException):
     def __init__(self, errors: str, status_code: int = 400):
         super(PydanticValidationException, self).__init__(errors, status_code)
+
+
+class CustomError(ApiException):
+    def __init__(self, message: str = None, status_code: int = 500):
+        super(CustomError, self).__init__(message, status_code)

@@ -1,8 +1,8 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint
 
 from src.adapter import CreateUserDto
 from src.application import app_constants, UserServiceImpl
-from ..custom_decorators import body
+from ..custom_decorators import validate_body
 from ..responses import create_response
 
 UsersController = Blueprint(
@@ -19,6 +19,7 @@ def find_user_by_id(user_id):
 
 
 @UsersController.route('', methods=['POST'])
-@body(CreateUserDto)
+@validate_body(CreateUserDto)
 def create_user(user: CreateUserDto):
-    return jsonify({"message": "User created", "data": user.dict()}), 201
+    user_created = UserServiceImpl.create_user(user)
+    return create_response(user_created, 201)

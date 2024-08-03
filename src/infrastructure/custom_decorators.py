@@ -6,14 +6,13 @@ from pydantic import ValidationError
 from src.exceptions import PydanticValidationException
 
 
-def body(dto_class):
+def validate_body(dto_class):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
             try:
                 data = request.get_json()
-                dto = dto_class(**data)
-                return func(dto=dto, *args, **kwargs)
+                return func(dto_class(**data), *args, **kwargs)
             except ValidationError as e:
                 errors_list = []
                 for error in e.errors():
