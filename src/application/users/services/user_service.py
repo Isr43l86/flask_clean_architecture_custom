@@ -28,4 +28,4 @@ class UserServiceImpl(UserService):
 
     @staticmethod
     def find_by_id(user_id: int) -> User | None:
-        return UserRepositoryImpl.find_by_id(user_id)
+        return UserRepositoryImpl.find_by_id(db, user_id)

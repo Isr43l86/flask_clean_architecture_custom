@@ -15,5 +15,5 @@ class UserRepository(ABC):
 
     @staticmethod
     @abstractmethod
-    def find_by_id(user_id: str) -> User:
+    def find_by_id(db: SQLAlchemy, user_id: str) -> User:
         pass
