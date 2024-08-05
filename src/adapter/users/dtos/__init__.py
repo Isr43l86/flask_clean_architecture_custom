@@ -1,3 +1,4 @@
-from .create_user_dto import CreateUser
+from .create_user_dto import CreateUserDto
+from .update_user_dto import UpdateUserDto
 
-__all__ = ['CreateUser']
+__all__ = ['CreateUserDto', 'UpdateUserDto']

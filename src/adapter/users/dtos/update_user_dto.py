@@ -1,8 +1,7 @@
 from pydantic import BaseModel
 
 
-class CreateUserDto(BaseModel):
-    person_id: str
+class UpdateUserDto(BaseModel):
     username: str
 
     class Config:
