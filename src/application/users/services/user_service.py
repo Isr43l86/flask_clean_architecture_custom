@@ -41,3 +41,15 @@ class UserServiceImpl(UserService):
             raise CustomError(error_messages.USER_ERROR_UPDATING)
 
         return convert_entity_to_model(UserEntity, User, user_updated)
+
+    @staticmethod
+    def delete_user(user_id: str) -> None:
+        UserRepositoryImpl.delete_user(db, user_id)
+        try:
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            logger.error(error_messages.USER_ERROR_DELETING)
+            raise CustomError(error_messages.USER_ERROR_DELETING)
+
+        return None

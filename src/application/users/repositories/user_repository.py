@@ -43,3 +43,8 @@ class UserRepositoryImpl(UserRepository):
             return user_found
 
         raise CustomError(error_messages.USER_NOT_FOUND, 404)
+
+    @staticmethod
+    def delete_user(db: SQLAlchemy, user_id: str) -> None:
+        user_found = UserRepositoryImpl.find_by_id(db, user_id)
+        db.session.delete(user_found)

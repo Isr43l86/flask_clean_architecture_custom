@@ -30,3 +30,9 @@ def create_user(user: CreateUserDto):
 def update_user(user: UpdateUserDto, user_id: str):
     user_updated = UserServiceImpl.update_user(user_id, user)
     return create_response(user_updated, 200)
+
+
+@UsersController.route('/<user_id>', methods=['DELETE'])
+def delete_user(user_id: str):
+    UserServiceImpl.delete_user(user_id)
+    return create_response(app_constants.USER_SUCCESS_DELETING, 200)
