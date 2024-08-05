@@ -20,3 +20,8 @@ class UserService(ABC):
     @abstractmethod
     def update_user(user_id: str, user: UpdateUserDto) -> User:
         pass
+
+    @staticmethod
+    @abstractmethod
+    def delete_user(user_id: str) -> None:
+        pass

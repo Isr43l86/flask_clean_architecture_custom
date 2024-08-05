@@ -22,3 +22,8 @@ class UserRepository(ABC):
     @abstractmethod
     def update_user(db: SQLAlchemy, user_id: str, user: UpdateUserDto) -> User:
         pass
+
+    @staticmethod
+    @abstractmethod
+    def delete_user(db: SQLAlchemy, user_id: str) -> None:
+        pass
