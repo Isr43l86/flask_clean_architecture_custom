@@ -1,6 +1,6 @@
 import logging
 
-from src.adapter import CreateUserDto
+from src.adapter import CreateUserDto, UpdateUserDto
 from src.database import db
 from src.domain import User, UserService
 from src.exceptions import CustomError
@@ -27,5 +27,17 @@ class UserServiceImpl(UserService):
         return convert_entity_to_model(UserEntity, User, user_created)
 
     @staticmethod
-    def find_by_id(user_id: int) -> User | None:
+    def find_by_id(user_id: str) -> User | None:
         return UserRepositoryImpl.find_by_id(db, user_id)
+
+    @staticmethod
+    def update_user(user_id: str, user: UpdateUserDto) -> User:
+        user_updated = UserRepositoryImpl.update_user(db, user_id, user)
+        try:
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            logger.error(error_messages.USER_ERROR_UPDATING)
+            raise CustomError(error_messages.USER_ERROR_UPDATING)
+
+        return convert_entity_to_model(UserEntity, User, user_updated)
