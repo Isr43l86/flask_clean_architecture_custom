@@ -8,3 +8,6 @@ APP_TIMEZONE = "America/Bogota"
 # DEFAULT VALUES
 DEFAULT_IP_ADDRESS = '172.0.0.1'
 DEFAULT_LOG_LEVEL = 'LOG_LEVEL'
+
+# User
+USER_SUCCESS_DELETING = 'Usuario eliminado correctamente'

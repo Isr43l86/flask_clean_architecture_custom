@@ -1,3 +1,3 @@
-from .dtos import CreateUser
+from .dtos import CreateUserDto, UpdateUserDto
 
-__all__ = ['CreateUser']
+__all__ = ['CreateUserDto', 'UpdateUserDto']
